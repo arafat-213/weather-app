@@ -22,24 +22,38 @@ hbs.registerPartials(partialPath)
 //Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
 
-app.get('', (req, res)=> {
+app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather'
     })
 })
 
-app.get('/about', (req,res) => {
+app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About us'
     })
 })
 
-app.get('/help',(req, res)=>{
+app.get('/help', (req, res) => {
     res.render('help', {
         msg: 'Help!!!!!',
         title: 'Help!'
     })
 })
-app.listen(3000, ()=> {
+
+//Reads all the undefined routes for help/....
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        msg: 'Error 404: Help page not found'
+    })
+})
+
+// Reads all the undefined routes and sends the error.
+app.get('*', (req, res) => {
+    res.render('404',  {
+        msg: 'Error 404: Page not found'
+    })
+})
+app.listen(3000, () => {
     console.log("Server is up on port 3000");
 })
