@@ -1,10 +1,9 @@
 const express = require('express')
 const path = require('path')
 const hbs = require('hbs')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
-console.log(__dirname);
-console.log(__filename);
-console.log();
 
 //Defines path for express config
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -28,6 +27,26 @@ app.get('', (req, res) => {
     })
 })
 
+// Weather end point reads weather from Query string and gives back weather data
+app.get('/weather', (req, res) => {
+    if(!req.query.city)
+        return res.send('Please enter city name to search for weather')
+    geocode(req.query.city, (error, {latitude, longitude}) => {
+        if (data) {
+            forecast(latitude, longitude, (error, data) => {
+                if (!error)
+                {
+                    res.send(data); 
+                    console.log(data); 
+                }
+                else
+                    res.send(error);
+            })
+        } else
+            res.send({error});
+    })
+})
+
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About us'
@@ -48,9 +67,10 @@ app.get('/help/*', (req, res) => {
     })
 })
 
+
 // Reads all the undefined routes and sends the error.
 app.get('*', (req, res) => {
-    res.render('404',  {
+    res.render('404', {
         msg: 'Error 404: Page not found'
     })
 })
