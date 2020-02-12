@@ -15,7 +15,7 @@ const forecast = (latitude, longitude, callback) => {
             callback('Unable to find location', undefined)
         }
         else
-            callback(undefined, 'It is currently ' + body.currently.temperature + ' degrees out here. There are ' + body.currently.precipProbability + ' % chances of rain')   
+            callback(undefined, 'It is currently ' + body.currently.temperature + ' degrees out there. There are ' + body.currently.precipProbability + ' % chances of rain')   
     })
 }
 

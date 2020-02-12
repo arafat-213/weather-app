@@ -29,21 +29,28 @@ app.get('', (req, res) => {
 
 // Weather end point reads weather from Query string and gives back weather data
 app.get('/weather', (req, res) => {
-    if(!req.query.city)
-        return res.send('Please enter city name to search for weather')
-    geocode(req.query.city, (error, {latitude, longitude}) => {
-        if (data) {
-            forecast(latitude, longitude, (error, data) => {
-                if (!error)
+    if(!req.query.city) {
+        return res.send({
+            error: 'Please enter city name to search for weather'
+        })
+    }
+        
+    geocode(req.query.city, (error, {latitude, longitude, location} = {}) => {
+        if (error) {
+            return res.send({error})
+        }
+            forecast(latitude, longitude, (error, forecastData = {}) => {
+                if (error)
                 {
-                    res.send(data); 
-                    console.log(data); 
+                    res.send({error})
                 }
-                else
-                    res.send(error);
+                    res.send({
+                        forecast: forecastData,
+                        location,
+                        city: req.query.city
+                    }); 
+                    console.log(forecastData); 
             })
-        } else
-            res.send({error});
     })
 })
 
@@ -55,7 +62,7 @@ app.get('/about', (req, res) => {
 
 app.get('/help', (req, res) => {
     res.render('help', {
-        msg: 'Help!!!!!',
+        msg: 'Wubba Lubba Dubb Dubbbbb',
         title: 'Help!'
     })
 })

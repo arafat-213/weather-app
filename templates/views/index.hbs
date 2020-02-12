@@ -9,14 +9,27 @@
 
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="icon" href="/img/weather.png">
-    <script src="/js/app.js"></script>
+
 </head>
 
 <body>
     <div class="main-content">
         {{>header}}
+
+        <h3>Get weather from this boring app!</h3>
+
+        <form>
+            <input placeholder="location">
+            <button>Search</button>
+        </form>
+
+        <p class="msg" id="message-1"></p>
+        <p class="msg" id="message-2"></p>
     </div>
     {{>footer}}
+
+    <script src="/js/app.js"></script>
+
 </body>
 
 </html>
